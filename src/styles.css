@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+:root {
+  /* Fontes */
+  --fonte-principal: 'Crimson Text', serif;
+  --fonte-titulos: 'Roboto', serif
+
+  /* Cores principais */
+  --cor-primaria: #FF8383;
+  --cor-secundaria: #FFB5B5;
+  --cor-branca: #FFFFFF;
+  --cor-preta: #000000;
+
+  /* Espaçamentos */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Bordas */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Tamanhos de fonte */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+
+  /* Altura de linha */
+  --line-height-sm: 1.2;
+  --line-height-md: 1.5;
+  --line-height-lg: 1.7;
+
+  /* Layout */
+  --container-width: 1200px;
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
