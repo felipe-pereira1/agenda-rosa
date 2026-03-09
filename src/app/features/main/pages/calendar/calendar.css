@@ -1,0 +1,90 @@
+/* --- OVERRIDES DO CALENDÁRIO PRIMENG PARA TEMA CLARO E ROSA --- */
+
+/* Fundo geral do calendário e remoção da borda */
+:host ::ng-deep .p-datepicker {
+  background-color: #ffffff !important; /* Fundo branco */
+  color: #3f3f3f !important; /* Letras em grafite escuro */
+  border: none !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Fundo interno da versão Inline */
+:host ::ng-deep .p-datepicker-inline {
+  width: 100% !important;
+  background-color: #ffffff !important;
+}
+
+/* Header do calendário (onde fica o Mês/Ano e as setas) */
+:host ::ng-deep .p-datepicker-header {
+  background-color: #ffffff !important;
+  color: #3f3f3f !important;
+  border-bottom: 1px solid #f0f0f0 !important; /* Uma linha suave separando os dias */
+}
+
+/* Cor dos botões de Mês e Ano no cabeçalho */
+:host ::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-month,
+:host ::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-year {
+  color: #3f3f3f !important;
+  font-weight: bold;
+}
+
+/* Cor das setinhas (ícones de anterior/próximo) */
+:host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-prev,
+:host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-next {
+  color: #f78184 !important; /* Setas na cor rosa da sua marca */
+}
+
+/* Cor dos dias da semana (Dom, Seg, Ter...) */
+:host ::ng-deep .p-datepicker table th {
+  color: #7a7a7a !important; /* Um cinza mais claro para não roubar a atenção */
+  font-weight: normal;
+}
+
+/* Configuração dos números dos dias normais */
+:host ::ng-deep .p-datepicker table td {
+  padding: 8px !important;
+}
+
+:host ::ng-deep .p-datepicker table td > span {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 1.1rem;
+  color: #3f3f3f !important; /* Números em grafite escuro */
+  background-color: transparent !important;
+}
+
+/* Dias fora do mês atual (desabilitados visualmente) */
+:host ::ng-deep .p-datepicker table td.p-datepicker-other-month > span {
+  color: #cccccc !important;
+}
+
+/* -------------------------------------------------------------
+   ESTADOS ESPECIAIS (HOJE, HOVER E SELECIONADO)
+   ------------------------------------------------------------- */
+
+/* Ao passar o mouse por cima de um dia livre (efeito hover) */
+:host ::ng-deep .p-datepicker table td > span:not(.p-highlight):hover {
+  background-color: #fcebeb !important; /* Fundo rosinha bem claro */
+  color: #f78184 !important;
+}
+
+/* Dia de Hoje (quando não está selecionado) */
+:host ::ng-deep .p-datepicker table td > span.p-datepicker-today {
+  background-color: #ffffff !important;
+  color: #f78184 !important; /* Número fica rosa */
+  font-weight: bold;
+}
+
+/* O Dia exato que o usuário clicou (Selecionado) */
+:host ::ng-deep .p-datepicker table td > span.p-highlight {
+  background-color: #f78184 !important; /* Fundo totalmente Rosa */
+  color: #ffffff !important; /* Letra Branca */
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(247, 129, 132, 0.4); /* Leve sombra rosa para destacar */
+}
+
+/* Tira aquele contorno azul de foco do navegador quando clica */
+:host ::ng-deep .p-datepicker table td > span:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

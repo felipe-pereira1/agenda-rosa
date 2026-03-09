@@ -1,0 +1,43 @@
+<div class="table-container">
+  
+  <!-- A MENSAGEM VAZIA (Aparece quando você deleta tudo) -->
+  <div *ngIf="agendamentos.length === 0" class="empty-message">
+    Sem agendamentos ainda
+  </div>
+
+  <!-- A TABELA (Aparece se tiver 1 ou mais itens) -->
+  <p-table 
+    *ngIf="agendamentos.length > 0" 
+    [value]="agendamentos" 
+    styleClass="custom-agenda-table">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+        <th>Hora</th>
+        <th>Produto</th>
+        <!-- Só mostra o título "Ações" se o @Input for true -->
+        <th *ngIf="mostrarAcoes">Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-agendamento let-rowIndex="rowIndex">
+      <tr [ngClass]="{'row-dark': rowIndex % 2 === 0, 'row-light': rowIndex % 2 !== 0}">
+        <td>{{ agendamento.nome }}</td>
+        <td>{{ agendamento.hora }}</td>
+        <td>{{ agendamento.servico }}</td>
+        
+        <!-- Só mostra o botão de lixeira se o @Input for true -->
+        <td *ngIf="mostrarAcoes">
+          <button 
+            class="btn-delete" 
+            (click)="clicouDeletar(agendamento)"
+            title="Deletar Agendamento">
+            <i class="pi pi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

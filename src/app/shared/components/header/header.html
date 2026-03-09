@@ -1,1 +1,24 @@
-<p>header works!</p>
+<header class="app-header">
+  <!-- Imagem da Logo Branca -->
+  <div class="logo-container">
+    <img src="/img/logoBranca.png" alt="Logo" class="header-logo">
+  </div>
+
+  <!-- Título Dinâmico -->
+  <div class="title-container">
+    <h1>{{ titulo }}</h1>
+  </div>
+
+  <!-- Menu Hambúrguer -->
+  <div class="menu-container">
+    <!-- O (click)="menu.toggle($event)" abre o popup -->
+    <button 
+      class="hamburger-btn" 
+      (click)="menu.toggle($event)">
+      <i class="pi pi-bars"></i>
+    </button>
+    
+    <!-- O popup invisível até clicar -->
+    <p-menu #menu [model]="menuItems" [popup]="true"></p-menu>
+  </div>
+</header>

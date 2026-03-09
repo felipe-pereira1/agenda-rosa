@@ -1,19 +1,46 @@
-.login-page {
+.main-wrapper {
+  background: #ffffff;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-page {
+  min-height: 30vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background: #f4f4f4;
-  padding: 24px 16px;
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.welcome-title {
+  text-align: left;
+  font-size: 2.2rem;
+  margin-top: 0;
+  color: #3f3f3f;
+  margin-bottom: 24px;
+  font-weight: 500; 
+}
+
+.top-image {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.img-login {
+  width: 435px;
+  margin-left: 0;
+  height: auto;
+  display: block;
 }
 
 .login-box {
   width: 100%;
   max-width: 360px;
-}
-
-form {
-  width: 100%;
+  background: #ffffff;
 }
 
 .field {
@@ -91,7 +118,7 @@ form {
 }
 
 .create-account a {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #2f2f2f;
   text-decoration: none;
 }
@@ -106,4 +133,30 @@ form {
   color: #4a4a4a;
   opacity: 1;
   font-size: 1.1rem;
+}
+
+:host ::ng-deep .custom-input:focus,
+:host ::ng-deep .custom-input:hover,
+:host ::ng-deep .custom-input.p-inputtext:focus,
+:host ::ng-deep .password-wrapper .p-password-input:focus,
+:host ::ng-deep .password-wrapper .p-password-input:hover {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #e8a9af !important;
+  background: transparent !important;
+}
+
+:host ::ng-deep .custom-input,
+:host ::ng-deep .password-wrapper .p-password-input {
+  color: #3f3f3f !important;
+}
+
+:host ::ng-deep .login-button:enabled:hover,
+:host ::ng-deep .login-button:enabled:active,
+:host ::ng-deep .login-button:enabled:focus,
+:host ::ng-deep .login-button:focus {
+  background: #f78184 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
 }

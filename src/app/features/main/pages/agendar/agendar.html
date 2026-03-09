@@ -1,0 +1,48 @@
+<app-header titulo="Agendar"></app-header>
+
+<div class="main-content">
+  <!-- Título com o dia da semana -->
+  <h2 class="data-title">{{ tituloDataExtenso }}</h2>
+
+  <!-- A tabela de agendamentos -->
+  <app-agendamentos-table [agendamentos]="agendamentosDoDia" (onDeletar)="removerDaLista($event)"></app-agendamentos-table>
+
+  <!-- Botão Flutuante (+) -->
+  <button class="fab-button" (click)="abrirModal()">
+    <i class="pi pi-plus"></i>
+  </button>
+</div>
+
+<app-footer></app-footer>
+
+
+<!-- MODAL DE AGENDAMENTO -->
+<p-dialog 
+  [(visible)]="mostrarModalAgendamento" 
+  [modal]="true" 
+  [closable]="false"
+  [showHeader]="false"
+  styleClass="modal-agendamento-rosa">
+  
+  <div class="modal-content">
+    <h3 class="modal-title">Marque um Horário</h3>
+
+    <div class="field">
+      <input type="text" pInputText placeholder="Nome da Cliente" [(ngModel)]="novoAgendamento.nome" class="modal-input" />
+    </div>
+
+    <div class="field">
+      <input type="text" pInputText placeholder="Horário" [(ngModel)]="novoAgendamento.hora" class="modal-input" />
+    </div>
+
+    <div class="field">
+      <input type="text" pInputText placeholder="Serviço" [(ngModel)]="novoAgendamento.servico" class="modal-input" />
+    </div>
+
+    <div class="modal-actions">
+      <button pButton label="Salvar" class="modal-btn-dark" (click)="salvarAgendamento()"></button>
+      <button pButton label="Cancelar" class="modal-btn-dark" (click)="cancelarAgendamento()"></button>
+    </div>
+  </div>
+
+</p-dialog>

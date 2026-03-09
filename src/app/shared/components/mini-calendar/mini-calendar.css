@@ -1,0 +1,58 @@
+.mini-calendar-container {
+  width: calc(100% - 32px); /* Desconta a margem lateral */
+  margin: 20px 16px;
+  font-family: 'Crimson Text', serif; /* Mantendo a tipografia do seu app */
+}
+
+.calendar-title {
+  color: #3f3f3f;
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0 0 15px 0; /* Espaço abaixo do título */
+  text-align: left;
+}
+
+.days-row {
+  display: flex;
+  justify-content: space-between; /* Distribui os 5 quadrados igualmente */
+  align-items: center;
+  gap: 8px; /* Espacinho entre eles */
+}
+
+/* O botão quadradinho rosa */
+.day-card {
+  flex: 1; /* Faz todos terem a mesma largura */
+  aspect-ratio: 1 / 1.1; /* Deixa o bloco levemente mais alto que largo (retangularzinho) */
+  background-color: #f78184; /* O rosa da identidade */
+  border: none;
+  border-radius: 4px; /* Bordas levemente arredondadas */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+/* Efeito de clique */
+.day-card:active {
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+
+.day-card:focus {
+  outline: none;
+}
+
+/* Textos dentro do quadrado */
+.day-name {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.day-number {
+  color: #ffffff;
+  font-size: 1.4rem;
+}

@@ -1,0 +1,45 @@
+.app-footer {
+  display: flex;
+  justify-content: space-around; 
+  align-items: center;
+  background-color: #f78184;
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0px -2px 10px rgba(0,0,0,0.1); 
+  z-index: 1000; 
+}
+
+.footer-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.footer-btn .pi {
+  font-size: 2rem; 
+  font-weight: bold; 
+  
+  /* Melhora a qualidade da renderização do ícone */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  
+  /* Garante que o ícone fique centralizado no próprio container */
+  display: inline-block;
+  line-height: 1;
+}
+
+.footer-btn:focus,
+.footer-btn:active {
+  outline: none;
+  transform: scale(0.9); 
+}

@@ -1,0 +1,80 @@
+/* Container principal com margens para não colar na tela */
+.table-container {
+  width: calc(100% - 32px); /* Desconta os 16px de cada lado da margem */
+  margin: 20px 16px; /* 20px em cima/embaixo e 16px nas laterais */
+  border-radius: 12px;
+  overflow: hidden; /* Garante que o fundo não passe do arredondamento */
+  font-family: 'Roboto', sans-serif;
+}
+
+.empty-message {
+  text-align: center;
+  padding: 30px;
+  background-color: #fcebeb;
+  color: #f78184;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* --- OVERRIDES DO PRIMENG TABLE --- */
+:host ::ng-deep .custom-agenda-table .p-datatable-wrapper {
+  border-radius: 12px;
+}
+
+:host ::ng-deep .custom-agenda-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* --- CABEÇALHO DA TABELA --- */
+:host ::ng-deep .custom-agenda-table .p-datatable-thead > tr > th {
+  background-color: #ffb6b9 !important; /* Rosa claro para o topo */
+  color: #ffffff !important;
+  font-weight: bold;
+  font-size: 1.2rem !important;
+  padding: 15px 10px;
+  border: none !important;
+  text-align: center !important; /* Centraliza os títulos (Nome, Hora, Produto) */
+}
+
+/* --- CÉLULAS DO CORPO (DADOS) --- */
+:host ::ng-deep .custom-agenda-table .p-datatable-tbody > tr > td {
+  padding: 12px 10px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  border: none !important;
+  font-weight: 500;
+  text-align: center !important; /* Alinha o texto do corpo com os títulos */
+}
+
+/* --- LINHAS ZEBRADAS (Listradas) --- */
+
+/* Linha escura (Rosa mais forte) */
+:host ::ng-deep .custom-agenda-table .p-datatable-tbody > tr.row-dark > td {
+  background-color: #f78184 !important; 
+}
+
+/* Linha clara (Rosa médio/claro) */
+:host ::ng-deep .custom-agenda-table .p-datatable-tbody > tr.row-light > td {
+  background-color: #fba9ac !important; 
+}
+
+.btn-delete {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-delete .pi {
+  font-size: 1.2rem;
+}
+
+.btn-delete:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}

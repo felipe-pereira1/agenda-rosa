@@ -1,45 +1,52 @@
-<img src="../../../../../assets/images/Logo PD Case (4).png" alt="Login">
+<div class="main-wrapper">
+  <div class="top-image">
+    <img src="/img/imagem-login.png" alt="Login" class="img-login" />
+  </div>
 
-<div class="login-page">
-  <div class="login-box">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="field">
-        <input
-          id="usuario"
-          type="text"
-          pInputText
-          formControlName="usuario"
-          class="custom-input"
-          placeholder="Usuário"
-        />
-      </div>
+  <div class="login-page">
+    <div class="login-box">
+      <h1 class="welcome-title">Bem Vindo!</h1>
 
-      <div class="field">
-        <p-password
-          inputId="senha"
-          formControlName="senha"
-          [feedback]="false"
-          [toggleMask]="false"
-          [inputStyleClass]="'custom-input password-input'"
-          styleClass="password-wrapper"
-          placeholder='Senha Padrão: “123”'
-        ></p-password>
-      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <input
+            id="usuario"
+            type="text"
+            pInputText
+            formControlName="usuario"
+            class="custom-input"
+            placeholder="Usuário"
+          />
+        </div>
 
-      <div class="forgot-password">
-        <a href="#">Esqueceu a senha?</a>
-      </div>
+        <div class="field">
+          <p-password
+            inputId="senha"
+            formControlName="senha"
+            [feedback]="false"
+            [toggleMask]="false"
+            [inputStyleClass]="'custom-input password-input'"
+            styleClass="password-wrapper"
+            placeholder="Senha Padrão: 123"
+          ></p-password>
+        </div>
 
-      <button
-        pButton
-        type="submit"
-        label="Login"
-        class="login-button p-button-rounded"
-      ></button>
+        <div class="forgot-password">
+          <a href="#">Esqueceu a senha?</a>
+        </div>
 
-      <div class="create-account">
-        <a href="#">Criar Conta</a>
-      </div>
-    </form>
+        <button
+          pButton
+          type="button"
+          label="Login"
+          class="login-button p-button-rounded"
+          (click)="onSubmit()"
+        ></button>
+
+        <div class="create-account">
+          <a href="#">Criar Conta</a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

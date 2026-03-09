@@ -1,0 +1,114 @@
+.main-content {
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding-top: 20px;
+  padding-bottom: 80px; 
+  box-sizing: border-box;
+  font-family: 'Crimson Text', serif;
+  position: relative; /* Necessário para ancorar o botão + */
+}
+
+/* Título de Data (ex: Segunda Feira - 18 de Março...) */
+.data-title {
+  color: #1a1a1a;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0 16px 20px 16px;
+  text-align: center;
+}
+
+/* --- BOTÃO FLUTUANTE (FAB) --- */
+.fab-button {
+  position: fixed;
+  bottom: 80px; /* Acima do footer (60px) + margem (20px) */
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #ff848a; /* Rosa mais vibrante */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px; /* Quadrado arredondado como no print */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 999;
+}
+
+.fab-button .pi {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.fab-button:active {
+  transform: scale(0.95);
+}
+
+/* --- ESTILOS DO MODAL (DIALOG) --- */
+
+/* Força o modal do PrimeNG a ter fundo rosa e bordas arredondadas */
+:host ::ng-deep .modal-agendamento-rosa .p-dialog-content {
+  background-color: #f78184 !important; /* Fundo Rosa do Modal */
+  border-radius: 16px !important;
+  padding: 30px 20px !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Título dentro do modal */
+.modal-title {
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+/* Campos de Input do Modal */
+.field {
+  margin-bottom: 20px;
+}
+
+.modal-input {
+  width: 100%;
+  background-color: #0d1b2a !important; /* Cor bem escura quase preta (azul marinho profundo) */
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 12px 15px !important;
+  font-size: 1rem !important;
+  font-weight: bold;
+}
+
+.modal-input::placeholder {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.modal-input:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+/* Botões do Modal */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+:host ::ng-deep .modal-btn-dark {
+  background-color: #0d1b2a !important; /* Mesma cor escura dos inputs */
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 20px !important; /* Botões mais arredondados estilo pílula */
+  padding: 10px 25px !important;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+:host ::ng-deep .modal-btn-dark:focus {
+  box-shadow: none !important;
+}

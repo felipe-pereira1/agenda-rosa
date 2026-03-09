@@ -1,0 +1,16 @@
+<app-header titulo="Calendário"></app-header>
+
+<div class="main-content">
+  <h2 class="section-title">Datas de Agendamentos</h2>
+
+  <!-- Container extra para aplicar CSS -->
+  <div class="calendar-wrapper">
+  <p-datepicker 
+    [(ngModel)]="dataSelecionada" 
+    [inline]="true" 
+    (onSelect)="aoSelecionarData($event)">
+  </p-datepicker>
+</div>
+</div>
+
+<app-footer></app-footer>
