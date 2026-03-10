@@ -89,8 +89,21 @@ export class AgendarComponent implements OnInit {
         listaTemporaria.push({ id_firebase: doc.id, ...doc.data() });
       });
       
-      // Ordenar por hora (opcional mas fica mais bonito na tabela)
-      this.agendamentosDoDia = listaTemporaria.sort((a, b) => a.hora.localeCompare(b.hora));
+      // ORDENAÇÃO MATEMÁTICA POR MINUTOS TOTAIS
+      this.agendamentosDoDia = listaTemporaria.sort((a, b) => {
+        // Verifica se a hora existe para evitar erros
+        if (!a.hora || !b.hora) return 0;
+
+        const horaA = a.hora.split(':');
+        const horaB = b.hora.split(':');
+        
+        // Transforma tudo em minutos
+        const minutosA = horaA.length === 2 ? (parseInt(horaA[0]) * 60) + parseInt(horaA[1]) : 0;
+        const minutosB = horaB.length === 2 ? (parseInt(horaB[0]) * 60) + parseInt(horaB[1]) : 0;
+        
+        // Menos minutos (mais cedo) ficam em cima
+        return minutosA - minutosB;
+      });
 
       // Força o Angular a atualizar a tabela imediatamente após receber os dados
       this.cdr.detectChanges();

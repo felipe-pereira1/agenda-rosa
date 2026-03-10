@@ -1,12 +1,12 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router'; // Necessário para redirecionar
+import { Router } from '@angular/router'; 
 import { HeaderComponent } from '../../../../shared/components/header/header';
 import { FooterComponent } from '../../../../shared/components/footer/footer';
 import { TableComponent } from '../../../../shared/components/table/table';
 import { MiniCalendarComponent } from '../../../../shared/components/mini-calendar/mini-calendar';
 
 // Importações do Firebase Firestore
-import { Firestore, collection, query, where, getDocs,  } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
@@ -77,13 +77,26 @@ export class HomeComponent implements OnInit {
         listaTemporaria.push({ id: doc.id, ...doc.data() });
       });
       
-      // Atualiza a variável que a sua tabela HTML lê
-      this.agendamentosDoDia = listaTemporaria;
+      // ORDENAÇÃO MATEMÁTICA POR MINUTOS TOTAIS
+      this.agendamentosDoDia = listaTemporaria.sort((a, b) => {
+        // Verifica se a hora existe para evitar erros
+        if (!a.hora || !b.hora) return 0;
+
+        const horaA = a.hora.split(':');
+        const horaB = b.hora.split(':');
+        
+        // Transforma tudo em minutos (ex: 8h * 60 + 30 = 510 minutos)
+        const minutosA = horaA.length === 2 ? (parseInt(horaA[0]) * 60) + parseInt(horaA[1]) : 0;
+        const minutosB = horaB.length === 2 ? (parseInt(horaB[0]) * 60) + parseInt(horaB[1]) : 0;
+        
+        // Coloca o menor número (mais cedo) primeiro
+        return minutosA - minutosB;
+      });
       
       // FORÇA A TABELA A ATUALIZAR NA TELA
       this.cdr.detectChanges(); 
       
-      console.log("Agendamentos carregados: ", this.agendamentosDoDia);
+      console.log("Agendamentos carregados e ordenados matematicamente: ", this.agendamentosDoDia);
 
     } catch (error) {
       console.error("Erro ao buscar agendamentos no Firebase:", error);
