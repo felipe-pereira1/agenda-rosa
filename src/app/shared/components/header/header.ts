@@ -34,10 +34,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    // Aqui você também pode limpar tokens do localStorage se houver:
-    // localStorage.removeItem('token');
+    // 1. Remove os dados do usuário do navegador para que a tela de login não o jogue de volta para a Home
+    localStorage.removeItem('usuarioLogado');
     
-    // Redireciona para o login
+    // 2. Redireciona para a tela de login
     this.router.navigate(['/login']); 
   }
 }
