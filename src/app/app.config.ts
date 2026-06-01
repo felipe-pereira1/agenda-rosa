@@ -1,14 +1,22 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  LOCALE_ID,
+  DEFAULT_CURRENCY_CODE
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
 
-// 1. Importações CORRETAS para projetos Angular
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
-// 2. Suas configurações originais
+registerLocaleData(localePt);
+
 const firebaseConfig = {
   apiKey: "AIzaSyAPDqkhPRJBNiXChJxraEXaGtnnl5MFggo",
   authDomain: "agenda-rosa-60b87.firebaseapp.com",
@@ -22,16 +30,29 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    { provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL' },
+
     providePrimeNG({
       theme: {
         preset: Aura,
         options: {
-      darkModeSelector: false || 'none' // Força o desligamento do modo escuro automático
-    }
+          darkModeSelector: 'none'
+        }
+      },
+      translation: {
+        dayNames: ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
+        dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
+        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+        monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+        monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+        today: 'Hoje',
+        clear: 'Limpar',
+        firstDayOfWeek: 0
       }
     }),
-    
-    // 3. Fornecendo o Firebase para todo o projeto Angular (Isso substitui o "const app")
+
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore())
   ]

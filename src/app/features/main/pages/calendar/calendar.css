@@ -1,11 +1,18 @@
+/* --- CONTAINER PRINCIPAL --- */
+.calendar-wrapper {
+  max-width: 320px;
+  margin: 0 40px;
+}
+
 /* --- OVERRIDES DO CALENDÁRIO PRIMENG PARA TEMA CLARO E ROSA --- */
 
 /* Fundo geral do calendário e remoção da borda */
 :host ::ng-deep .p-datepicker {
-  background-color: #ffffff !important; /* Fundo branco */
-  color: #3f3f3f !important; /* Letras em grafite escuro */
+  background-color: #ffffff !important;
+  color: #3f3f3f !important;
   border: none !important;
   font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
 }
 
 /* Fundo interno da versão Inline */
@@ -14,11 +21,12 @@
   background-color: #ffffff !important;
 }
 
-/* Header do calendário (onde fica o Mês/Ano e as setas) */
+/* Header do calendário */
 :host ::ng-deep .p-datepicker-header {
   background-color: #ffffff !important;
   color: #3f3f3f !important;
-  border-bottom: 1px solid #f0f0f0 !important; /* Uma linha suave separando os dias */
+  border-bottom: 1px solid #f0f0f0 !important;
+  padding: 0.5rem 0.75rem !important;
 }
 
 /* Cor dos botões de Mês e Ano no cabeçalho */
@@ -26,65 +34,80 @@
 :host ::ng-deep .p-datepicker .p-datepicker-title .p-datepicker-year {
   color: #3f3f3f !important;
   font-weight: bold;
+  font-size: 0.95rem;
 }
 
-/* Cor das setinhas (ícones de anterior/próximo) */
+/* Cor das setinhas */
 :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-prev,
 :host ::ng-deep .p-datepicker .p-datepicker-header .p-datepicker-next {
-  color: #f78184 !important; /* Setas na cor rosa da sua marca */
+  color: #f78184 !important;
+  width: 2rem !important;
+  height: 2rem !important;
 }
 
-/* Cor dos dias da semana (Dom, Seg, Ter...) */
+/* Cor dos dias da semana */
 :host ::ng-deep .p-datepicker table th {
-  color: #7a7a7a !important; /* Um cinza mais claro para não roubar a atenção */
+  color: #7a7a7a !important;
   font-weight: normal;
+  font-size: 0.8rem;
+  padding: 4px !important;
 }
 
 /* Configuração dos números dos dias normais */
 :host ::ng-deep .p-datepicker table td {
-  padding: 8px !important;
+  padding: 3px !important;
 }
 
 :host ::ng-deep .p-datepicker table td > span {
-  width: 40px !important;
-  height: 40px !important;
-  font-size: 1.1rem;
-  color: #3f3f3f !important; /* Números em grafite escuro */
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 0.9rem !important;
+  color: #3f3f3f !important;
   background-color: transparent !important;
+  border-radius: 50%;
 }
 
-/* Dias fora do mês atual (desabilitados visualmente) */
+/* Dias fora do mês atual */
 :host ::ng-deep .p-datepicker table td.p-datepicker-other-month > span {
   color: #cccccc !important;
 }
 
-/* -------------------------------------------------------------
-   ESTADOS ESPECIAIS (HOJE, HOVER E SELECIONADO)
-   ------------------------------------------------------------- */
-
-/* Ao passar o mouse por cima de um dia livre (efeito hover) */
+/* Hover */
 :host ::ng-deep .p-datepicker table td > span:not(.p-highlight):hover {
-  background-color: #fcebeb !important; /* Fundo rosinha bem claro */
+  background-color: #fcebeb !important;
   color: #f78184 !important;
 }
 
-/* Dia de Hoje (quando não está selecionado) */
+/* Dia de Hoje */
 :host ::ng-deep .p-datepicker table td > span.p-datepicker-today {
   background-color: #ffffff !important;
-  color: #f78184 !important; /* Número fica rosa */
+  color: #f78184 !important;
   font-weight: bold;
 }
 
-/* O Dia exato que o usuário clicou (Selecionado) */
+/* Dia selecionado */
 :host ::ng-deep .p-datepicker table td > span.p-highlight {
-  background-color: #f78184 !important; /* Fundo totalmente Rosa */
-  color: #ffffff !important; /* Letra Branca */
+  background-color: #f78184 !important;
+  color: #ffffff !important;
   font-weight: bold;
-  box-shadow: 0 2px 6px rgba(247, 129, 132, 0.4); /* Leve sombra rosa para destacar */
+  box-shadow: 0 2px 6px rgba(247, 129, 132, 0.4);
 }
 
-/* Tira aquele contorno azul de foco do navegador quando clica */
+/* Remove foco padrão */
 :host ::ng-deep .p-datepicker table td > span:focus {
   outline: none !important;
   box-shadow: none !important;
 }
+
+:host ::ng-deep .calendar-wrapper,
+:host ::ng-deep .calendar-wrapper * ,
+:host ::ng-deep .calendar-wrapper *::before,
+:host ::ng-deep .calendar-wrapper *::after {
+  box-sizing: content-box !important;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 500;
+}
+
