@@ -155,49 +155,70 @@ export class AgendarComponent implements OnInit {
 
   // Salva ou Atualiza no Banco de Dados e fecha o modal imediatamente
   async salvarAgendamento() {
-    if(this.novoAgendamento.nome && this.novoAgendamento.hora && this.novoAgendamento.servico) {
+  if (this.novoAgendamento.nome && this.novoAgendamento.hora && this.novoAgendamento.servico) {
+    this.mostrarModalAgendamento = false;
+    this.cdr.detectChanges();
 
-      // FECHA O MODAL IMEDIATAMENTE (antes de ir pro Firebase)
-      this.mostrarModalAgendamento = false;
-      this.cdr.detectChanges();
+    try {
+      if (this.idAgendamentoEmEdicao) {
+        const idEditando = this.idAgendamentoEmEdicao;
 
-      try {
-        // --- MODO EDIÇÃO: atualiza o documento existente ---
-        if (this.idAgendamentoEmEdicao) {
-          const docRef = doc(this.firestore, 'agendamentos', this.idAgendamentoEmEdicao);
-          await updateDoc(docRef, {
+        const docRef = doc(this.firestore, 'agendamentos', idEditando);
+        await updateDoc(docRef, {
+          nome: this.novoAgendamento.nome,
+          hora: this.novoAgendamento.hora,
+          servico: this.novoAgendamento.servico
+        });
+
+        const index = this.agendamentosDoDia.findIndex(
+          item => item.id_firebase === idEditando
+        );
+
+        if (index !== -1) {
+          this.agendamentosDoDia[index] = {
+            ...this.agendamentosDoDia[index],
             nome: this.novoAgendamento.nome,
             hora: this.novoAgendamento.hora,
             servico: this.novoAgendamento.servico
-          });
-
-        // --- MODO CRIAÇÃO: adiciona um documento novo ---
-        } else {
-          const agendamentoParaSalvar = {
-            nome: this.novoAgendamento.nome,
-            hora: this.novoAgendamento.hora,
-            servico: this.novoAgendamento.servico,
-            data: this.dataAtualDaRota,
-            id_usuario: this.idUsuarioLogado
           };
-          await addDoc(collection(this.firestore, 'agendamentos'), agendamentoParaSalvar);
+
+          this.agendamentosDoDia = [...this.agendamentosDoDia].sort((a, b) => {
+            if (!a.hora || !b.hora) return 0;
+
+            const horaA = a.hora.split(':');
+            const horaB = b.hora.split(':');
+
+            const minutosA = horaA.length === 2 ? (parseInt(horaA[0]) * 60) + parseInt(horaA[1]) : 0;
+            const minutosB = horaB.length === 2 ? (parseInt(horaB[0]) * 60) + parseInt(horaB[1]) : 0;
+
+            return minutosA - minutosB;
+          });
         }
 
-        // Limpa o estado e recarrega a lista
-        this.idAgendamentoEmEdicao = null;
-        this.limparFormulario();
-        await this.buscarAgendamentosDaRota();
-        
-      } catch (error) {
-        console.error("Erro ao salvar no banco: ", error);
-        alert("Erro ao salvar o agendamento.");
-        
-        // Se der erro, abre o modal de novo pra pessoa tentar novamente
-        this.mostrarModalAgendamento = true;
         this.cdr.detectChanges();
+      } else {
+        const agendamentoParaSalvar = {
+          nome: this.novoAgendamento.nome,
+          hora: this.novoAgendamento.hora,
+          servico: this.novoAgendamento.servico,
+          data: this.dataAtualDaRota,
+          id_usuario: this.idUsuarioLogado
+        };
+
+        await addDoc(collection(this.firestore, 'agendamentos'), agendamentoParaSalvar);
+        await this.buscarAgendamentosDaRota();
       }
+
+      this.idAgendamentoEmEdicao = null;
+      this.limparFormulario();
+    } catch (error) {
+      console.error('Erro ao salvar no banco: ', error);
+      alert('Erro ao salvar o agendamento.');
+      this.mostrarModalAgendamento = true;
+      this.cdr.detectChanges();
     }
   }
+}
 
   limparFormulario() {
     this.novoAgendamento = { nome: '', hora: '', servico: '' };

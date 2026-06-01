@@ -5,7 +5,11 @@
   <h2 class="data-title">{{ tituloDataExtenso }}</h2>
 
   <!-- A tabela de agendamentos -->
-  <app-agendamentos-table [agendamentos]="agendamentosDoDia" (onDeletar)="removerDaLista($event)"></app-agendamentos-table>
+  <app-agendamentos-table
+  [agendamentos]="agendamentosDoDia"
+  (onDeletar)="removerDaLista($event)"
+  (onEditar)="abrirModalEdicao($event)">
+</app-agendamentos-table>
 
   <!-- Botão Flutuante (+) -->
   <button class="fab-button" (click)="abrirModal()">
