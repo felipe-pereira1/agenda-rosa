@@ -1,9 +1,9 @@
 /* Container principal com margens para não colar na tela */
 .table-container {
-  width: calc(100% - 32px); /* Desconta os 16px de cada lado da margem */
-  margin: 20px 16px; /* 20px em cima/embaixo e 16px nas laterais */
+  width: calc(100% - 32px);
+  margin: 20px 16px;
   border-radius: 12px;
-  overflow: hidden; /* Garante que o fundo não passe do arredondamento */
+  overflow: hidden;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -29,13 +29,13 @@
 
 /* --- CABEÇALHO DA TABELA --- */
 :host ::ng-deep .custom-agenda-table .p-datatable-thead > tr > th {
-  background-color: #ffb6b9 !important; /* Rosa claro para o topo */
+  background-color: #ffb6b9 !important;
   color: #ffffff !important;
   font-weight: bold;
   font-size: 1.2rem !important;
   padding: 15px 10px;
   border: none !important;
-  text-align: center !important; /* Centraliza os títulos (Nome, Hora, Produto) */
+  text-align: center !important;
 }
 
 /* --- CÉLULAS DO CORPO (DADOS) --- */
@@ -45,21 +45,31 @@
   font-size: 1.2rem;
   border: none !important;
   font-weight: 500;
-  text-align: center !important; /* Alinha o texto do corpo com os títulos */
+  text-align: center !important;
 }
 
 /* --- LINHAS ZEBRADAS (Listradas) --- */
 
 /* Linha escura (Rosa mais forte) */
 :host ::ng-deep .custom-agenda-table .p-datatable-tbody > tr.row-dark > td {
-  background-color: #f78184 !important; 
+  background-color: #f78184 !important;
 }
 
 /* Linha clara (Rosa médio/claro) */
 :host ::ng-deep .custom-agenda-table .p-datatable-tbody > tr.row-light > td {
-  background-color: #fba9ac !important; 
+  background-color: #fba9ac !important;
 }
 
+/* --- CÉLULA DE AÇÕES (alinha os dois botões) --- */
+.acoes-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* --- BOTÕES DE AÇÃO (base compartilhada) --- */
+.btn-edit,
 .btn-delete {
   background: transparent;
   border: none;
@@ -70,10 +80,18 @@
   transition: transform 0.2s, background 0.2s;
 }
 
+.btn-edit .pi,
 .btn-delete .pi {
   font-size: 1.2rem;
 }
 
+/* Hover do editar — branco translúcido igual ao deletar */
+.btn-edit:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Hover do deletar — mantido idêntico ao original */
 .btn-delete:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.1);

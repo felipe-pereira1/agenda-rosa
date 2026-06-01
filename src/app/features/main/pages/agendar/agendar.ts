@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 // Importações do Firebase Firestore
-import { Firestore, collection, query, where, getDocs, addDoc, deleteDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs, addDoc, deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
 
 // Importações do PrimeNG
 import { DialogModule } from 'primeng/dialog';
@@ -38,6 +38,9 @@ export class AgendarComponent implements OnInit {
   dataAtualDaRota: string = '';
   agendamentosDoDia: any[] = [];
   
+  // Guarda o ID do agendamento sendo editado (null = criando novo)
+  idAgendamentoEmEdicao: string | null = null;
+
   // Guardará o ID da pessoa que está usando o sistema agora
   idUsuarioLogado: string = '';
 
@@ -127,36 +130,62 @@ export class AgendarComponent implements OnInit {
   }
 
   abrirModal() {
+    // Garante que abre limpo (modo criação)
+    this.idAgendamentoEmEdicao = null;
+    this.limparFormulario();
+    this.mostrarModalAgendamento = true;
+  }
+
+  // Abre o modal já preenchido com os dados do agendamento escolhido
+  abrirModalEdicao(agendamento: any) {
+    this.idAgendamentoEmEdicao = agendamento.id_firebase;
+    this.novoAgendamento = {
+      nome: agendamento.nome,
+      hora: agendamento.hora,
+      servico: agendamento.servico
+    };
     this.mostrarModalAgendamento = true;
   }
 
   cancelarAgendamento() {
     this.mostrarModalAgendamento = false;
+    this.idAgendamentoEmEdicao = null;
     this.limparFormulario();
   }
 
-  // Salva no Banco de Dados e fecha o modal imediatamente
+  // Salva ou Atualiza no Banco de Dados e fecha o modal imediatamente
   async salvarAgendamento() {
     if(this.novoAgendamento.nome && this.novoAgendamento.hora && this.novoAgendamento.servico) {
-      
-      const agendamentoParaSalvar = {
-        nome: this.novoAgendamento.nome,
-        hora: this.novoAgendamento.hora,
-        servico: this.novoAgendamento.servico,
-        data: this.dataAtualDaRota,
-        id_usuario: this.idUsuarioLogado // O SEGREDO: Salvar a quem pertence!
-      };
 
       // FECHA O MODAL IMEDIATAMENTE (antes de ir pro Firebase)
       this.mostrarModalAgendamento = false;
-      this.limparFormulario();
-      this.cdr.detectChanges(); // Avisa a tela que fechamos o modal
+      this.cdr.detectChanges();
 
       try {
-        // Envia para o Firebase
-        await addDoc(collection(this.firestore, 'agendamentos'), agendamentoParaSalvar);
-        
-        // Recarrega a lista da tela
+        // --- MODO EDIÇÃO: atualiza o documento existente ---
+        if (this.idAgendamentoEmEdicao) {
+          const docRef = doc(this.firestore, 'agendamentos', this.idAgendamentoEmEdicao);
+          await updateDoc(docRef, {
+            nome: this.novoAgendamento.nome,
+            hora: this.novoAgendamento.hora,
+            servico: this.novoAgendamento.servico
+          });
+
+        // --- MODO CRIAÇÃO: adiciona um documento novo ---
+        } else {
+          const agendamentoParaSalvar = {
+            nome: this.novoAgendamento.nome,
+            hora: this.novoAgendamento.hora,
+            servico: this.novoAgendamento.servico,
+            data: this.dataAtualDaRota,
+            id_usuario: this.idUsuarioLogado
+          };
+          await addDoc(collection(this.firestore, 'agendamentos'), agendamentoParaSalvar);
+        }
+
+        // Limpa o estado e recarrega a lista
+        this.idAgendamentoEmEdicao = null;
+        this.limparFormulario();
         await this.buscarAgendamentosDaRota();
         
       } catch (error) {
