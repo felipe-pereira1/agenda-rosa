@@ -1,237 +1,216 @@
+/* ==================== LAYOUT PRINCIPAL ==================== */
 .main-wrapper {
-  background: #ffffff;
   width: 100%;
   height: 100vh;
   height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: #ffffff;
 }
 
 .login-page {
-  min-height: 30vh;
+  flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background: #ffffff;
-  margin: 0;
-  padding: 0;
-}
-
-.welcome-title {
-  text-align: left;
-  font-size: 2.2rem;
-  margin-top: 0;
-  color: #3f3f3f;
-  margin-bottom: 24px;
-  font-weight: 500; 
-}
-
-.top-image {
-  width: 100%;
   overflow: hidden;
-  line-height: 0;
-}
-
-.img-login {
-  width: 435px;
-  margin-left: 0;
-  height: auto;
-  display: block;
+  margin: 0;
+  padding: 0 clamp(20px, 6.4vw, 24px) 12px;
+  background: #ffffff;
 }
 
 .login-box {
   width: 100%;
+  height: 100%;
   max-width: 360px;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
   background: #ffffff;
 }
 
-.field {
-  margin-bottom: 28px;
-}
-
-.field label {
-  display: block;
-  font-size: 1.8rem;
-  color: #3f3f3f;
-  margin-bottom: 10px;
-}
-
-.custom-input {
+/* ==================== TÍTULOS ==================== */
+.container-titles {
   width: 100%;
-  border: none;
-  border-bottom: 1px solid #e8a9af;
-  border-radius: 0;
-  background: transparent;
-  padding: 10px 0;
-  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  gap: 5px;
+  margin: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+}
+
+.title-gradient {
+  background: linear-gradient(90deg, #ff3f7f 0%, #f78184 100%);
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: 1;
+}
+
+/* ==================== FORMULÁRIO PRINCIPAL ==================== */
+.login-box form {
+  width: 100%;
+  align-self: center;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.float-field {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.field-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  z-index: 1;
+  color: #959ba8;
+  font-size: 1rem;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color 0.2s ease;
+}
+
+.float-field label {
+  margin: 0;
+  color: #3f3f3f;
+  font-size: 1rem;
+}
+
+/* Mantém o texto-label depois do ícone enquanto o campo estiver vazio. */
+:host ::ng-deep .float-field:not(:has(input:focus)):not(:has(input.p-filled)):not(:has(input:-webkit-autofill)):not(:has(.p-inputwrapper-focus)):not(:has(.p-inputwrapper-filled)) label {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.rounded-input,
+:host ::ng-deep .password-wrapper .p-password-input {
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  padding: 0 44px;
+  border: 1px solid #959ba8;
+  border-radius: 10px;
   outline: none;
-  box-shadow: none;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 8%);
+  color: #3f3f3f;
+  font-size: 1.2rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 :host ::ng-deep .password-wrapper {
+  display: block;
   width: 100%;
-}
-
-:host ::ng-deep .password-wrapper .p-password-input {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid #e8a9af;
-  border-radius: 0;
-  background: transparent;
-  padding: 10px 0;
-  font-size: 1.6rem;
-  box-shadow: none;
 }
 
 :host ::ng-deep .password-wrapper .p-password {
   width: 100%;
 }
 
+.rounded-input:focus,
+:host ::ng-deep .password-wrapper .p-password-input:focus {
+  border-color: #f78184 !important;
+  box-shadow: 0 0 0 1px #f78184 !important;
+}
+
+/* Remove o estado rosa assim que o foco real sair do campo. */
+.rounded-input:not(:focus),
+:host ::ng-deep .password-wrapper .p-password-input:not(:focus) {
+  border-color: #959ba8 !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 8%) !important;
+}
+
+:host ::ng-deep .float-field:has(input:focus) label {
+  color: #f78184;
+}
+
+.float-field:has(input:focus) .field-icon {
+  color: #f78184;
+}
+
+:host ::ng-deep .float-field:not(:focus-within) label {
+  color: #3f3f3f !important;
+}
+
+.float-field:not(:focus-within) .field-icon {
+  color: #959ba8 !important;
+}
+
+/* ==================== ESQUECEU A SENHA ==================== */
 .forgot-password {
+  margin-top: -6px;
+  margin-bottom: 24px;
   text-align: right;
-  margin-top: -10px;
-  margin-bottom: 34px;
 }
 
 .forgot-password a {
-  font-size: 1.4rem;
   color: #3f3f3f;
+  font-size: 1rem;
   text-decoration: none;
 }
 
+/* ==================== BOTÃO DE LOGIN ==================== */
 .login-button {
   width: 100%;
-  height: 54px;
+  height: 48px;
   border: none;
-  background: #f78184;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff3f7f 0%, #f78184 100%);
   color: #ffffff;
-  font-size: 2rem;
-  font-style: italic;
-  border-radius: 28px;
+  font-size: 1.5rem;
 }
 
 :host ::ng-deep .login-button .p-button-label {
   font-weight: 400;
-}
-
-.create-account {
-  text-align: center;
-  margin-top: 18px;
-}
-
-.create-account a {
-  font-size: 1.4rem;
-  color: #2f2f2f;
-  text-decoration: none;
-}
-
-.custom-input::placeholder {
-  color: #4a4a4a;
-  opacity: 1;
-  font-size: 1.1rem;
-}
-
-:host ::ng-deep .password-wrapper .p-password-input::placeholder {
-  color: #4a4a4a;
-  opacity: 1;
-  font-size: 1.1rem;
-}
-
-:host ::ng-deep .custom-input:focus,
-:host ::ng-deep .custom-input:hover,
-:host ::ng-deep .custom-input.p-inputtext:focus,
-:host ::ng-deep .password-wrapper .p-password-input:focus,
-:host ::ng-deep .password-wrapper .p-password-input:hover {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: #e8a9af !important;
-  background: transparent !important;
-}
-
-:host ::ng-deep .custom-input,
-:host ::ng-deep .password-wrapper .p-password-input {
-  color: #3f3f3f !important;
+  font-size: 20px;
 }
 
 :host ::ng-deep .login-button:enabled:hover,
 :host ::ng-deep .login-button:enabled:active,
 :host ::ng-deep .login-button:enabled:focus,
 :host ::ng-deep .login-button:focus {
-  background: #f78184 !important;
   border-color: transparent !important;
-  box-shadow: none !important;
   outline: none !important;
+  background: linear-gradient(90deg, #ff3f7f 0%, #f78184 100%) !important;
+  box-shadow: none !important;
 }
 
-/* Layout mobile: usa o iPhone SE (375 x 667) como referência mínima. */
-@media (max-width: 480px) {
-  .top-image {
-    width: 100%;
-    height: clamp(240px, 43dvh, 340px);
-    flex: 0 0 clamp(240px, 43dvh, 340px);
-    overflow: hidden;
-  }
-
-  .img-login {
-    /* Os 4px extras escondem a pequena transparência existente nas bordas do PNG. */
-    width: calc(100% + 4px);
-    max-width: none;
-    height: calc(100% + 4px);
-    margin: 0;
-    object-fit: fill;
-    transform: translate(-2px, -2px);
-  }
-
-  .login-page {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: hidden;
-    padding: 0 24px 12px;
-  }
-
-  .login-box {
-    max-width: 100%;
-  }
-
-  .welcome-title {
-    margin-bottom: 18px;
-    font-size: 1.9rem;
-  }
-
-  .field {
-    margin-bottom: 20px;
-  }
-
-  .custom-input,
-  :host ::ng-deep .password-wrapper .p-password-input {
-    min-width: 0;
-    padding: 8px 0;
-    font-size: 1.2rem;
-  }
-
-  .forgot-password {
-    margin-top: -6px;
-    margin-bottom: 24px;
-  }
-
-  .forgot-password a,
-  .create-account a {
-    font-size: 1rem;
-  }
-
-  .login-button {
-    height: 48px;
-    font-size: 1.5rem;
-  }
-
-  .create-account {
-    margin-top: 14px;
-  }
+/* ==================== CRIAR CONTA ==================== */
+.create-account {
+  width: 100%;
+  align-self: end;
+  margin: 0;
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
+  text-align: center;
 }
 
-@media (max-width: 360px) {
-  .login-page {
-    padding-inline: 20px;
-  }
+.create-account p {
+  margin: 0;
+}
+
+.create-account a {
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.create-account-link {
+  color: #f78184;
 }

@@ -1,34 +1,42 @@
 <div class="main-wrapper">
-  <div class="top-image">
-    <img src="/img/imagem-login.png" alt="Login" class="img-login" />
-  </div>
-
   <div class="login-page">
     <div class="login-box">
-      <h1 class="welcome-title">Bem Vindo!</h1>
+      <div class="container-titles">
+        <h1 class="title">Bem <span class="title-gradient">Vindo!</span></h1>
+        <h2 class="subtitle">Preencha os dados abaixo para começar.</h2>
+      </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="field">
-          <input
-            id="usuario"
-            type="text"
-            pInputText
-            formControlName="usuario"
-            class="custom-input"
-            placeholder="Usuário"
-          />
+          <p-floatlabel variant="on" class="float-field">
+            <i class="pi pi-user p-inputicon field-icon" aria-hidden="true"></i>
+            <input
+              id="usuario"
+              type="text"
+              pInputText
+              formControlName="usuario"
+              class="rounded-input"
+              autocomplete="username"
+            />
+            <label for="usuario">Usuário</label>
+          </p-floatlabel>
         </div>
 
         <div class="field">
-          <p-password
-            inputId="senha"
-            formControlName="senha"
-            [feedback]="false"
-            [toggleMask]="false"
-            [inputStyleClass]="'custom-input password-input'"
-            styleClass="password-wrapper"
-            placeholder="Senha Padrão: 123"
-          ></p-password>
+          <p-floatlabel variant="on" class="float-field">
+            <i class="pi pi-unlock p-inputicon field-icon" aria-hidden="true"></i>
+            <p-password
+              inputId="senha"
+              formControlName="senha"
+              [feedback]="false"
+              [toggleMask]="true"
+              [autofocus]="false"
+              inputStyleClass="rounded-input"
+              styleClass="password-wrapper"
+              autocomplete="current-password"
+            ></p-password>
+            <label for="senha">Senha</label>
+          </p-floatlabel>
         </div>
 
         <div class="forgot-password">
@@ -38,15 +46,17 @@
         <button
           pButton
           type="button"
-          label="Login"
+          label="Continuar"
           class="login-button p-button-rounded"
           (click)="onSubmit()"
         ></button>
-
-        <div class="create-account">
-          <a href="#">Criar Conta</a>
-        </div>
       </form>
+
+      <div class="create-account">
+        <p>
+          Ainda não possui uma conta? <a class="create-account-link" href="#">Crie uma agora.</a>
+        </p>
+      </div>
     </div>
   </div>
 </div>
