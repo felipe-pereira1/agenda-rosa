@@ -10,21 +10,24 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule, FloatLabelModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule, FloatLabelModule, ToastModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
+  providers: [MessageService]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  mensagemErro: string = '';
   loading: boolean = false;
 
   // NOVO: Injeção do Firestore do jeito recomendado pelo Angular 17+
   private firestore = inject(Firestore);
+  private messageService = inject(MessageService);
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +50,7 @@ export class LoginComponent implements OnInit {
     
     if (this.loginForm.valid) {
       this.loading = true;
+      this.messageService.clear('login');
       const { usuario, senha } = this.loginForm.value;
 
       console.log(`Buscando no banco o usuário: ${usuario}`);
@@ -75,22 +79,34 @@ export class LoginComponent implements OnInit {
             nomeCompleto: dadosUsuario['nomeCompleto'] || dadosUsuario['nome']
           }));
 
-          this.mensagemErro = '';
+          this.messageService.clear('login');
           this.router.navigate(['/home']);
           
         } else {
           console.log("Nenhum usuário encontrado com essa senha.");
-          this.mensagemErro = 'Usuário ou senha incorretos.';
+          this.exibirAviso();
         }
       } catch (error) {
         console.error("Erro CRÍTICO ao buscar no banco: ", error);
-        this.mensagemErro = 'Erro de conexão com o banco de dados.';
+        this.exibirAviso();
       } finally {
         this.loading = false;
       }
     } else {
       console.log("O formulário não está válido. Faltou digitar algo.");
       this.loginForm.markAllAsTouched();
+      this.exibirAviso();
     }
+  }
+
+  private exibirAviso(): void {
+    this.messageService.clear('login');
+    this.messageService.add({
+      key: 'login',
+      severity: 'warn',
+      summary: 'Atenção',
+      detail: 'Preencha os campos corretamente',
+      life: 4000
+    });
   }
 }
