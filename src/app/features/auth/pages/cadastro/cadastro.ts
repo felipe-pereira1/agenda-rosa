@@ -4,13 +4,22 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import {
+  Auth,
+  createUserWithEmailAndPassword,
+  deleteUser,
+  signOut
+} from '@angular/fire/auth';
+import {
   Firestore,
   addDoc,
   collection,
+  doc,
   getDocs,
   query,
+  setDoc,
   where
 } from '@angular/fire/firestore';
+import { environment } from '../../../../../environments/environment';
 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -37,6 +46,7 @@ import { ToastModule } from 'primeng/toast';
 })
 export class CadastroComponent {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly auth = inject(Auth);
   private readonly firestore = inject(Firestore);
   private readonly router = inject(Router);
   private readonly messageService = inject(MessageService);
@@ -46,7 +56,10 @@ export class CadastroComponent {
   readonly cadastroForm = this.formBuilder.group({
     usuario: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
-    senha: ['', [Validators.required, Validators.minLength(3)]]
+    senha: ['', [
+      Validators.required,
+      Validators.minLength(environment.useFirebaseAuthentication ? 6 : 3)
+    ]]
   });
 
   async onSubmit(): Promise<void> {
@@ -56,7 +69,8 @@ export class CadastroComponent {
       if (this.cadastroForm.controls.email.invalid) {
         this.exibirErro('Digite um endereço de e-mail válido.');
       } else if (this.cadastroForm.controls.senha.invalid) {
-        this.exibirErro('A senha deve ter pelo menos 3 caracteres.');
+        const minimo = environment.useFirebaseAuthentication ? 6 : 3;
+        this.exibirErro(`A senha deve ter pelo menos ${minimo} caracteres.`);
       } else {
         this.exibirErro('Preencha corretamente todos os campos.');
       }
@@ -89,16 +103,40 @@ export class CadastroComponent {
         return;
       }
 
-      await addDoc(usuariosRef, {
-        nome: nomeNormalizado,
-        email: emailNormalizado,
-        senha
-      });
+      if (environment.useFirebaseAuthentication) {
+        const credencial = await createUserWithEmailAndPassword(
+          this.auth,
+          emailNormalizado,
+          senha ?? ''
+        );
+
+        try {
+          await setDoc(doc(this.firestore, 'usuarios', credencial.user.uid), {
+            nome: nomeNormalizado,
+            email: emailNormalizado
+          });
+        } catch (error) {
+          // Evita deixar uma conta sem perfil caso a gravação no Firestore falhe.
+          await deleteUser(credencial.user);
+          throw error;
+        }
+
+        // O Firebase conecta automaticamente após criar a conta. Neste fluxo,
+        // o usuário deve voltar ao login para entrar com o nome de usuário.
+        await signOut(this.auth);
+      } else {
+        // Fluxo legado temporário para não interromper a usuária em produção.
+        await addDoc(usuariosRef, {
+          nome: nomeNormalizado,
+          email: emailNormalizado,
+          senha
+        });
+      }
 
       await this.router.navigate(['/login']);
     } catch (error) {
       console.error('Erro ao cadastrar usuário:', error);
-      this.exibirErro('Não foi possível realizar o cadastro. Tente novamente.');
+      this.exibirErro(this.obterMensagemDeErro(error));
     } finally {
       this.loading = false;
     }
@@ -113,5 +151,19 @@ export class CadastroComponent {
       detail: mensagem,
       life: 4000
     });
+  }
+
+  private obterMensagemDeErro(error: unknown): string {
+    const codigo = (error as { code?: string })?.code;
+
+    if (codigo === 'auth/email-already-in-use') {
+      return 'Esse e-mail já está cadastrado.';
+    }
+
+    if (codigo === 'auth/weak-password') {
+      return 'A senha deve ter pelo menos 6 caracteres.';
+    }
+
+    return 'Não foi possível realizar o cadastro. Tente novamente.';
   }
 }

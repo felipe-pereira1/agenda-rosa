@@ -42,9 +42,17 @@
           </p-floatlabel>
         </div>
 
-        <div class="forgot-password">
-          <a href="#">Esqueceu a senha?</a>
-        </div>
+        @if (recuperacaoDisponivel) {
+          <div class="forgot-password">
+            <button
+              type="button"
+              class="forgot-password-link"
+              (click)="abrirRecuperacao()"
+            >
+              Esqueceu a senha?
+            </button>
+          </div>
+        }
 
         <button
           pButton
@@ -62,4 +70,10 @@
       </div>
     </div>
   </div>
+
+  @if (recuperacaoDisponivel) {
+    <app-esqueci-senha-modal
+      [(visible)]="modalRecuperacaoVisivel"
+    />
+  }
 </div>

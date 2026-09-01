@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Auth, signOut } from '@angular/fire/auth';
+import { environment } from '../../../../environments/environment';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
@@ -19,7 +21,10 @@ export class HeaderComponent implements OnInit {
   // Itens do menu hambúrguer
   menuItems: MenuItem[] | undefined;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private auth: Auth
+  ) {}
 
   ngOnInit() {
     this.menuItems = [
@@ -33,11 +38,14 @@ export class HeaderComponent implements OnInit {
     ];
   }
 
-  logout() {
-    // 1. Remove os dados do usuário do navegador para que a tela de login não o jogue de volta para a Home
-    localStorage.removeItem('usuarioLogado');
-    
-    // 2. Redireciona para a tela de login
-    this.router.navigate(['/login']); 
+  async logout(): Promise<void> {
+    try {
+      if (environment.useFirebaseAuthentication) {
+        await signOut(this.auth);
+      }
+    } finally {
+      localStorage.removeItem('usuarioLogado');
+      await this.router.navigate(['/login']);
+    }
   }
 }
