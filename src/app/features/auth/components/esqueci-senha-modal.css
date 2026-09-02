@@ -1,5 +1,5 @@
 :host ::ng-deep .recovery-dialog {
-  width: min(430px, calc(100vw - 32px));
+  width: min(430px, calc(100vw - 40px));
   border: 0;
   border-radius: 18px;
   overflow: hidden;
@@ -65,6 +65,18 @@
   width: 100%;
 }
 
+.float-field label {
+  color: #3f3f3f !important;
+}
+
+/* Mantém o label à direita do ícone enquanto o campo estiver vazio. */
+.float-field:not(:has(input:focus)):not(:has(input.p-filled)):not(:has(input:-webkit-autofill)) label {
+  top: 50%;
+  left: 44px !important;
+  inset-inline-start: 44px !important;
+  transform: translateY(-50%);
+}
+
 .field-icon {
   position: absolute;
   top: 50%;
@@ -92,7 +104,6 @@
   box-shadow: 0 0 0 1px #f78184;
 }
 
-:host ::ng-deep .float-field:has(input:focus) label,
 .float-field:has(input:focus) .field-icon {
   color: #f78184;
 }
@@ -123,16 +134,27 @@
   border-radius: 10px;
 }
 
-:host ::ng-deep .cancel-button {
-  border: 1px solid #d3d0d4;
-  background: #ffffff;
-  color: #555158;
-}
-
-:host ::ng-deep .send-button {
+.cancel-button {
   border: 0;
   background: linear-gradient(90deg, #ff3f7f 0%, #f78184 100%);
   color: #ffffff;
+}
+
+.send-button {
+  border: 0;
+  background: linear-gradient(90deg, #ff3f7f 0%, #f78184 100%);
+  color: #ffffff;
+}
+
+.cancel-button:enabled:hover,
+.cancel-button:enabled:active,
+.cancel-button:enabled:focus,
+.send-button:enabled:hover,
+.send-button:enabled:active,
+.send-button:enabled:focus {
+  border-color: transparent;
+  background: linear-gradient(90deg, #ff3f7f 0%, #f78184 100%);
+  box-shadow: none;
 }
 
 .success-content {

@@ -35,9 +35,12 @@ export class EsqueciSenhaModalComponent {
 
   loading = false;
   emailEnviado = false;
+  tentouEnviar = false;
   mensagemErro = '';
 
   async enviarLink(): Promise<void> {
+    this.tentouEnviar = true;
+
     if (this.emailForm.invalid) {
       this.emailForm.markAllAsTouched();
       return;
@@ -77,6 +80,7 @@ export class EsqueciSenhaModalComponent {
     this.visibleChange.emit(false);
     this.emailForm.reset();
     this.emailEnviado = false;
+    this.tentouEnviar = false;
     this.mensagemErro = '';
   }
 

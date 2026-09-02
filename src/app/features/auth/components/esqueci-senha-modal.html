@@ -8,6 +8,7 @@
   [closable]="!loading"
   [closeOnEscape]="!loading"
   [dismissableMask]="!loading"
+  [style]="{ width: 'min(430px, calc(100vw - 40px))' }"
   appendTo="body"
   styleClass="recovery-dialog"
 >
@@ -36,7 +37,7 @@
           <label for="email-recuperacao">E-mail</label>
         </p-floatlabel>
 
-        @if (emailForm.controls.email.touched && emailForm.controls.email.invalid) {
+        @if (tentouEnviar && emailForm.controls.email.invalid) {
           <small class="field-error">Digite um endereço de e-mail válido.</small>
         }
       </div>
@@ -48,18 +49,18 @@
       <div class="dialog-actions">
         <button
           pButton
+          type="submit"
+          label="Enviar link"
+          class="send-button"
+          [loading]="loading"
+        ></button>
+        <button
+          pButton
           type="button"
           label="Cancelar"
           class="cancel-button"
           [disabled]="loading"
           (click)="fechar()"
-        ></button>
-        <button
-          pButton
-          type="submit"
-          label="Enviar link"
-          class="send-button"
-          [loading]="loading"
         ></button>
       </div>
     </form>
