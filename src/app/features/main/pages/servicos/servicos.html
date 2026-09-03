@@ -1,0 +1,17 @@
+<app-header titulo="Serviços"></app-header>
+
+<div class="main-content">
+  <h2 class="section-title">Serviços cadastrados</h2>
+
+  <button
+    class="fab-button"
+    type="button"
+    aria-label="Cadastrar serviço"
+    (click)="abrirModalServico()"
+  >
+    <i class="pi pi-plus" aria-hidden="true"></i>
+  </button>
+</div>
+
+<app-servicos-modal [(visible)]="modalServicoVisivel" />
+<app-footer></app-footer>

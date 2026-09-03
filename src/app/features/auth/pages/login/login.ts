@@ -13,7 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { EsqueciSenhaModalComponent } from '../../components/esqueci-senha-modal';
+import { EsqueciSenhaModalComponent } from '../../components/esqueci-senha-modal/esqueci-senha-modal';
 
 @Component({
   selector: 'app-login',

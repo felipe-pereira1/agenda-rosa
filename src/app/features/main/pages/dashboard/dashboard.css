@@ -1,0 +1,12 @@
+.main-content {
+  min-height: 100vh;
+  padding: 20px 16px 96px;
+  background-color: #ffffff;
+}
+
+.section-title {
+  margin: 0;
+  color: #3f3f3f;
+  font-size: 1.6rem;
+  font-weight: 500;
+}

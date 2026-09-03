@@ -1,0 +1,42 @@
+.main-content {
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding-top: 20px;
+  padding-bottom: 80px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.section-title {
+  margin: 0 16px 20px;
+  color: #3f3f3f;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.fab-button {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: #ff848a;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
+  cursor: pointer;
+  z-index: 999;
+}
+
+.fab-button .pi {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.fab-button:active {
+  transform: scale(0.95);
+}
