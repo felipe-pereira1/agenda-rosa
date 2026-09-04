@@ -8,13 +8,13 @@ import { Firestore, collection, query, where, getDocs, addDoc, deleteDoc, doc, u
 
 // Importações do PrimeNG
 import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
 
 // Seus componentes compartilhados
 import { FooterComponent } from '../../../../shared/components/footer/footer';
 import { HeaderComponent } from '../../../../shared/components/header/header';
 import { agendamentos, TableComponent } from '../../../../shared/components/table/table';
+import { Servico } from '../../models/servico.model';
+import { ServicosService } from '../../services/servicos.service';
 
 @Component({
   selector: 'app-agendar',
@@ -23,8 +23,6 @@ import { agendamentos, TableComponent } from '../../../../shared/components/tabl
     CommonModule, 
     FormsModule, 
     DialogModule, 
-    ButtonModule, 
-    InputTextModule, 
     HeaderComponent, 
     FooterComponent, 
     TableComponent,
@@ -37,6 +35,8 @@ export class AgendarComponent implements OnInit {
   tituloDataExtenso: string = '';
   dataAtualDaRota: string = '';
   agendamentosDoDia: any[] = [];
+  servicosDisponiveis: Servico[] = [];
+  carregandoServicos = true;
   
   // Guarda o ID do agendamento sendo editado (null = criando novo)
   idAgendamentoEmEdicao: string | null = null;
@@ -47,12 +47,13 @@ export class AgendarComponent implements OnInit {
   novoAgendamento = {
     nome: '',
     hora: '',
-    servico: ''
+    servicoId: ''
   };
 
   // Injetando Banco de Dados, Rotas e o Detetor de Mudanças
   private firestore = inject(Firestore);
   private cdr = inject(ChangeDetectorRef);
+  private servicosService = inject(ServicosService);
   
   constructor(private route: ActivatedRoute, private router: Router) {}
 
@@ -64,6 +65,7 @@ export class AgendarComponent implements OnInit {
       return;
     }
     this.idUsuarioLogado = JSON.parse(userJson).id;
+    void this.buscarServicosDisponiveis();
 
     // 2. Pega a data da URL (ex: '2026-03-18')
     const dataUrl = this.route.snapshot.paramMap.get('data');
@@ -73,6 +75,22 @@ export class AgendarComponent implements OnInit {
       
       // 3. Busca os dados no banco de dados para essa data
       this.buscarAgendamentosDaRota();
+    }
+  }
+
+  async buscarServicosDisponiveis(): Promise<void> {
+    this.carregandoServicos = true;
+
+    try {
+      this.servicosDisponiveis = await this.servicosService.listarAtivos(
+        this.idUsuarioLogado
+      );
+    } catch (error) {
+      console.error('Erro ao carregar serviços:', error);
+      this.servicosDisponiveis = [];
+    } finally {
+      this.carregandoServicos = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -139,10 +157,16 @@ export class AgendarComponent implements OnInit {
   // Abre o modal já preenchido com os dados do agendamento escolhido
   abrirModalEdicao(agendamento: any) {
     this.idAgendamentoEmEdicao = agendamento.id_firebase;
+    const servicoCorrespondente = this.servicosDisponiveis.find(
+      servico =>
+        servico.id === agendamento.servicoId ||
+        servico.nome === agendamento.servico
+    );
+
     this.novoAgendamento = {
       nome: agendamento.nome,
       hora: agendamento.hora,
-      servico: agendamento.servico
+      servicoId: servicoCorrespondente?.id ?? ''
     };
     this.mostrarModalAgendamento = true;
   }
@@ -153,9 +177,22 @@ export class AgendarComponent implements OnInit {
     this.limparFormulario();
   }
 
+  aoAlterarVisibilidadeModal(visible: boolean): void {
+    if (!visible) {
+      this.cancelarAgendamento();
+      return;
+    }
+
+    this.mostrarModalAgendamento = true;
+  }
+
   // Salva ou Atualiza no Banco de Dados e fecha o modal imediatamente
   async salvarAgendamento() {
-  if (this.novoAgendamento.nome && this.novoAgendamento.hora && this.novoAgendamento.servico) {
+  const servicoSelecionado = this.servicosDisponiveis.find(
+    servico => servico.id === this.novoAgendamento.servicoId
+  );
+
+  if (this.novoAgendamento.nome && this.novoAgendamento.hora && servicoSelecionado) {
     this.mostrarModalAgendamento = false;
     this.cdr.detectChanges();
 
@@ -167,7 +204,9 @@ export class AgendarComponent implements OnInit {
         await updateDoc(docRef, {
           nome: this.novoAgendamento.nome,
           hora: this.novoAgendamento.hora,
-          servico: this.novoAgendamento.servico
+          servicoId: servicoSelecionado.id,
+          servico: servicoSelecionado.nome,
+          valorServicoCentavos: servicoSelecionado.valorCentavos
         });
 
         const index = this.agendamentosDoDia.findIndex(
@@ -179,7 +218,9 @@ export class AgendarComponent implements OnInit {
             ...this.agendamentosDoDia[index],
             nome: this.novoAgendamento.nome,
             hora: this.novoAgendamento.hora,
-            servico: this.novoAgendamento.servico
+            servicoId: servicoSelecionado.id,
+            servico: servicoSelecionado.nome,
+            valorServicoCentavos: servicoSelecionado.valorCentavos
           };
 
           this.agendamentosDoDia = [...this.agendamentosDoDia].sort((a, b) => {
@@ -200,7 +241,9 @@ export class AgendarComponent implements OnInit {
         const agendamentoParaSalvar = {
           nome: this.novoAgendamento.nome,
           hora: this.novoAgendamento.hora,
-          servico: this.novoAgendamento.servico,
+          servicoId: servicoSelecionado.id,
+          servico: servicoSelecionado.nome,
+          valorServicoCentavos: servicoSelecionado.valorCentavos,
           data: this.dataAtualDaRota,
           id_usuario: this.idUsuarioLogado
         };
@@ -221,7 +264,7 @@ export class AgendarComponent implements OnInit {
 }
 
   limparFormulario() {
-    this.novoAgendamento = { nome: '', hora: '', servico: '' };
+    this.novoAgendamento = { nome: '', hora: '', servicoId: '' };
   }
 
   // Deleta do Banco de Dados

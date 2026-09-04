@@ -1,0 +1,66 @@
+import { Injectable, inject } from '@angular/core';
+import {
+  Firestore,
+  Timestamp,
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+  where
+} from '@angular/fire/firestore';
+import { NovoServico, Servico } from '../models/servico.model';
+
+@Injectable({ providedIn: 'root' })
+export class ServicosService {
+  private readonly firestore = inject(Firestore);
+
+  async listarAtivos(idUsuario: string): Promise<Servico[]> {
+    const servicosRef = collection(this.firestore, 'servicos');
+    const consulta = query(servicosRef, where('id_usuario', '==', idUsuario));
+    const resultado = await getDocs(consulta);
+
+    return resultado.docs
+      .map(documento => {
+        const dados = documento.data();
+
+        return {
+          id: documento.id,
+          nome: String(dados['nome'] ?? ''),
+          valorCentavos: Number(dados['valorCentavos'] ?? 0),
+          duracaoMinutos:
+            typeof dados['duracaoMinutos'] === 'number'
+              ? dados['duracaoMinutos']
+              : null,
+          ativo: dados['ativo'] !== false,
+          criadoEm: dados['criadoEm'] instanceof Timestamp
+            ? dados['criadoEm']
+            : undefined
+        };
+      })
+      .filter(servico => servico.ativo)
+      .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+  }
+
+  async cadastrar(idUsuario: string, novoServico: NovoServico): Promise<Servico> {
+    const dadosParaSalvar = {
+      id_usuario: idUsuario,
+      nome: novoServico.nome,
+      valorCentavos: novoServico.valorCentavos,
+      duracaoMinutos: novoServico.duracaoMinutos,
+      ativo: true,
+      criadoEm: serverTimestamp()
+    };
+
+    const documento = await addDoc(
+      collection(this.firestore, 'servicos'),
+      dadosParaSalvar
+    );
+
+    return {
+      id: documento.id,
+      ...novoServico,
+      ativo: true
+    };
+  }
+}

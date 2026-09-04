@@ -3,6 +3,42 @@
 <div class="main-content">
   <h2 class="section-title">Serviços cadastrados</h2>
 
+  @if (!carregandoServicos) {
+    <div class="services-table-container">
+      @if (servicos.length === 0) {
+      <div class="empty-message" role="status">
+        <i class="pi pi-sparkles" aria-hidden="true"></i>
+        <p>Ainda não há serviços cadastrados.</p>
+      </div>
+      } @else {
+        <table class="services-table">
+          <thead>
+            <tr>
+              <th scope="col">Serviço</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Duração</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (servico of servicos; track servico.id) {
+              <tr>
+                <td>{{ servico.nome }}</td>
+                <td>{{ servico.valorCentavos / 100 | currency: 'BRL' }}</td>
+                <td>
+                  {{ servico.duracaoMinutos ? servico.duracaoMinutos + ' min' : '—' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  }
+
+  @if (mensagemErro) {
+    <p class="page-error" role="alert">{{ mensagemErro }}</p>
+  }
+
   <button
     class="fab-button"
     type="button"
@@ -13,5 +49,19 @@
   </button>
 </div>
 
-<app-servicos-modal [(visible)]="modalServicoVisivel" />
+@if (carregandoServicos) {
+  <div class="loading-overlay" role="status" aria-live="polite">
+    <div class="loading-modal">
+      <i class="pi pi-spinner loading-spinner" aria-hidden="true"></i>
+      <span>Carregando serviços...</span>
+    </div>
+  </div>
+}
+
+<app-servicos-modal
+  [(visible)]="modalServicoVisivel"
+  [salvando]="salvandoServico"
+  [erroAoSalvar]="mensagemErro"
+  (salvar)="salvarServico($event)"
+/>
 <app-footer></app-footer>

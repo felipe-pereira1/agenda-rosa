@@ -1,7 +1,14 @@
 <header class="app-header">
-  <!-- Imagem da Logo Branca -->
   <div class="logo-container">
-    <img src="/img/logoBranca.png" alt="Logo" class="header-logo">
+    <button
+      class="logo-button"
+      type="button"
+      aria-label="Ir para o início"
+      title="Início"
+      (click)="irParaHome()"
+    >
+      <img src="/img/logoBranca.png" alt="Agenda Rosa" class="header-logo">
+    </button>
   </div>
 
   <!-- Título Dinâmico -->

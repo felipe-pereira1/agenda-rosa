@@ -48,4 +48,8 @@ export class HeaderComponent implements OnInit {
       await this.router.navigate(['/login']);
     }
   }
+
+  irParaHome(): void {
+    void this.router.navigate(['/home']);
+  }
 }

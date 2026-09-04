@@ -16,6 +16,25 @@
   justify-content: flex-start;
 }
 
+.logo-button {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.logo-button:focus-visible {
+  border-radius: 8px;
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.logo-button:active {
+  transform: scale(0.96);
+}
+
 .header-logo {
   height: 65px;
   margin-top: 25px;
